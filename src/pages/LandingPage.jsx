@@ -1,11 +1,11 @@
 import React from "react";
-import AuthWrapper from "../features/Auth/AuthWrapper";
 import LandingElements from "../components/LandingElements";
+import { Outlet } from "react-router-dom";
 
 const LandingPage = () => {
   return (
     <div className="h-screen w-screen bg-[#FAFAFBFF] relative overflow-hidden">
-      <AuthWrapper />
+      <Outlet />
       <LandingElements />
     </div>
   );
