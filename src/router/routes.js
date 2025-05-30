@@ -2,6 +2,8 @@ import { createBrowserRouter } from "react-router-dom";
 import LandingPage from "../pages/LandingPage";
 import AuthWrapper from "../features/Auth/AuthWrapper";
 import ToAuth from "../features/Auth/ToAuth";
+import DashboardLayout from "../features/Layout/DashboardLayout";
+import DashboardPage from "../pages/DashboardPage";
 
 const appRouter = createBrowserRouter([
   {
@@ -21,6 +23,14 @@ const appRouter = createBrowserRouter([
         element: <AuthWrapper type="login" />,
       },
     ],
+  },
+  {
+    path: "/dashboard",
+    element: (
+      <DashboardLayout>
+        <DashboardPage />
+      </DashboardLayout>
+    ),
   },
 ]);
 
