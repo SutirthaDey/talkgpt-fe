@@ -5,7 +5,7 @@ import { BsFillSendFill } from "react-icons/bs";
 import { GrMicrophone } from "react-icons/gr";
 
 const DashboardPage = () => {
-  const [chatHistory, setChatHistory] = useState([3]);
+  const [chatHistory, setChatHistory] = useState([]);
   const [message, setMessage] = useState(null);
   return (
     <div className="w-full min-h-96 h-screen flex flex-col overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent mt-5 py-5 relative">
