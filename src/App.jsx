@@ -1,11 +1,17 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, RouterProvider } from "react-router-dom";
 import "./App.css";
+import { UserProvider } from "./contexts/UserContext";
+import appRouter from "./router/routes";
 
 function App() {
   return (
-    <div className="App">
-      <Outlet></Outlet>
-    </div>
+    <UserProvider>
+      <RouterProvider router={appRouter}>
+        <div className="App">
+          <Outlet></Outlet>
+        </div>
+      </RouterProvider>
+    </UserProvider>
   );
 }
 
