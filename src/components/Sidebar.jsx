@@ -1,8 +1,24 @@
 import React from "react";
 import { BiSearchAlt } from "react-icons/bi";
 import { BsThreeDots } from "react-icons/bs";
+import { useApiRequest } from "../hooks/useApiRequest";
+import { UnauthorizedError } from "../errors/unauthorized.exception";
+import { useLogOut } from "../hooks/useLogOut";
 
 const Sidebar = () => {
+  const apiRequest = useApiRequest();
+  const logOut = useLogOut();
+  const startNewChat = async () => {
+    const url = "chat/start";
+    try {
+      const response = await apiRequest(url, { method: "POST" });
+    } catch (err) {
+      if (err instanceof UnauthorizedError) {
+        alert(err.message);
+        logOut();
+      }
+    }
+  };
   return (
     <div className="min-w-72 h-full bg-[#FDF1F5FF] rounded-2xl flex flex-col items-center px-3 gap-3">
       <div className="w-full h-20 flex items-center justify-between">
@@ -20,6 +36,7 @@ const Sidebar = () => {
       <button
         className="w-full h-10 flex justify-center items-center bg-[#171A1FFF] text-white rounded-lg font-inter text-sm font-[400]
        hover:bg-[#262A33FF]"
+        onClick={startNewChat}
       >
         + New chat
       </button>

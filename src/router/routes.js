@@ -4,6 +4,7 @@ import AuthWrapper from "../features/Auth/AuthWrapper";
 import ToAuth from "../features/Auth/ToAuth";
 import DashboardLayout from "../features/Layout/DashboardLayout";
 import DashboardPage from "../pages/DashboardPage";
+import PrivateRoute from "../components/PrivateRoute";
 
 const appRouter = createBrowserRouter([
   {
@@ -27,9 +28,11 @@ const appRouter = createBrowserRouter([
   {
     path: "/dashboard",
     element: (
-      <DashboardLayout>
-        <DashboardPage />
-      </DashboardLayout>
+      <PrivateRoute>
+        <DashboardLayout>
+          <DashboardPage />
+        </DashboardLayout>
+      </PrivateRoute>
     ),
   },
 ]);

@@ -1,13 +1,18 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import apiRequest from "../../utils/api";
+import { useState } from "react";
 import { MdVisibility } from "react-icons/md";
 import { MdVisibilityOff } from "react-icons/md";
-import { storeUserAndToken } from "../../utils/storeUserAndToken";
+import { useAuth } from "../../contexts/AuthContext";
+import { useApiRequest } from "../../hooks/useApiRequest";
+import { useNavigate } from "react-router-dom";
+import { useLogOut } from "../../hooks/useLogOut";
+import { saveUserAndTokens } from "../../utils/saveUserAndTokens";
 
 const ManualAuth = ({ type }) => {
   const [showPassword, setShowPassword] = useState(false);
+  const { setIsAuthenticated } = useAuth();
+  const apiRequest = useApiRequest();
   const navigate = useNavigate();
+  const logOut = useLogOut;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,10 +29,12 @@ const ManualAuth = ({ type }) => {
 
       const { data } = response;
 
-      storeUserAndToken(data.user, {
+      saveUserAndTokens(data.user, {
         accessToken: data.accessToken,
         refreshToken: data.refreshToken,
       });
+
+      setIsAuthenticated(true);
 
       navigate("/dashboard");
     } catch (error) {
