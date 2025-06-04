@@ -10,8 +10,8 @@ So Suppose In Layout, this will be there
 Now in the router, we need to define the routes for the 3 pages where this will be like
 
 {
-  path: "/dashboard",
-  element: <DashboardLayout />,
+  path: "/chat",
+  element: <ChatLayout />,
   children: [
     { path: "", element: <Home /> },
     { path: "profile", element: <Profile /> },

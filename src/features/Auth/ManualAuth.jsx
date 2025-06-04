@@ -38,7 +38,7 @@ const ManualAuth = ({ type }) => {
 
       setIsAuthenticated(true);
 
-      navigate("/dashboard");
+      navigate("/chat");
     } catch (error) {
       const message = normalizeError(error.message);
       toast.error(message);

@@ -2,8 +2,8 @@ import { createBrowserRouter } from "react-router-dom";
 import LandingPage from "../pages/LandingPage";
 import AuthWrapper from "../features/Auth/AuthWrapper";
 import ToAuth from "../features/Auth/ToAuth";
-import DashboardLayout from "../features/Layout/DashboardLayout";
-import DashboardPage from "../pages/DashboardPage";
+import ChatLayout from "../features/Layout/ChatLayout";
+import ChatPage from "../pages/ChatPage";
 import PrivateRoute from "../components/PrivateRoute";
 
 const appRouter = createBrowserRouter([
@@ -17,15 +17,15 @@ const appRouter = createBrowserRouter([
     ],
   },
   {
-    path: "/dashboard",
+    path: "/chat",
     element: (
       <PrivateRoute>
-        <DashboardLayout />
+        <ChatLayout />
       </PrivateRoute>
     ),
     children: [
-      { path: "", element: <DashboardPage /> },
-      // Add more dashboard sub-pages here, e.g.:
+      { path: "", element: <ChatPage /> },
+      // Add more chat sub-pages here, e.g.:
       // { path: "settings", element: <SettingsPage /> },
     ],
   },
