@@ -6,6 +6,8 @@ import { useApiRequest } from "../../hooks/useApiRequest";
 import { useNavigate } from "react-router-dom";
 import { useLogOut } from "../../hooks/useLogOut";
 import { saveUserAndTokens } from "../../utils/saveUserAndTokens";
+import { toast } from "react-hot-toast";
+import { normalizeError } from "../../utils/normalizeError";
 
 const ManualAuth = ({ type }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -38,7 +40,8 @@ const ManualAuth = ({ type }) => {
 
       navigate("/dashboard");
     } catch (error) {
-      alert(error.message);
+      const message = normalizeError(error.message);
+      toast.error(message);
     }
   };
 

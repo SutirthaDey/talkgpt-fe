@@ -1,5 +1,6 @@
 import React from "react";
 import Sidebar from "../../components/Sidebar";
+import { Outlet } from "react-router-dom";
 // import Header from "./Header";
 
 const DashboardLayout = ({ children }) => {
@@ -8,7 +9,7 @@ const DashboardLayout = ({ children }) => {
       <Sidebar />
       <div className="w-full h-screen flex flex-col items-center">
         {/* <Header /> */}
-        {children}
+        <Outlet></Outlet>
       </div>
     </div>
   );

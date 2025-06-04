@@ -1,5 +1,4 @@
 import { baseUrl } from "../constants/enviroment";
-import { UnauthorizedError } from "../errors/unauthorized.exception";
 // import { useLogOut } from "./useLogOut";
 
 export function useApiRequest() {
@@ -43,20 +42,14 @@ export function useApiRequest() {
         localStorage.setItem("accessToken", data.accessToken);
         config.headers.Authorization = `Bearer ${data.accessToken}`;
         response = await fetch(baseUrl + path, config);
-      } else {
-        throw new UnauthorizedError("Session expired. Please log in again.");
       }
-    }
-
-    if (response.status === 401) {
-      throw new UnauthorizedError("Unauthorized access. Please log in.");
     }
 
     if (!response.ok) {
       throw new Error(await response.text());
     }
 
-    return response.json();
+    return await response.json();
   }
 
   return apiRequest;

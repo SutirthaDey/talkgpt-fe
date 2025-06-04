@@ -2,8 +2,9 @@ import React from "react";
 import { BiSearchAlt } from "react-icons/bi";
 import { BsThreeDots } from "react-icons/bs";
 import { useApiRequest } from "../hooks/useApiRequest";
-import { UnauthorizedError } from "../errors/unauthorized.exception";
 import { useLogOut } from "../hooks/useLogOut";
+import { normalizeError } from "../utils/normalizeError";
+import toast from "react-hot-toast";
 
 const Sidebar = () => {
   const apiRequest = useApiRequest();
@@ -12,11 +13,10 @@ const Sidebar = () => {
     const url = "chat/start";
     try {
       const response = await apiRequest(url, { method: "POST" });
-    } catch (err) {
-      if (err instanceof UnauthorizedError) {
-        alert(err.message);
-        logOut();
-      }
+    } catch (error) {
+      const message = normalizeError(error.message);
+      toast.error(message);
+      logOut();
     }
   };
   return (

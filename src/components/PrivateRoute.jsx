@@ -1,14 +1,19 @@
-// PrivateRoute.jsx
+import toast from "react-hot-toast";
 import { useAuth } from "../contexts/AuthContext";
-import { useLogOut } from "../hooks/useLogOut";
+import { Navigate } from "react-router-dom";
 
 const PrivateRoute = ({ children }) => {
   const { isAuthenticated } = useAuth();
-  const logOut = useLogOut();
 
   if (isAuthenticated === null) return <div>Loading...</div>;
 
-  return isAuthenticated ? children : logOut();
+  if (isAuthenticated === false) {
+    toast.error("session expired!");
+
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
 };
 
 export default PrivateRoute;

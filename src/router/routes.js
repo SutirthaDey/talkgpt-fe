@@ -11,29 +11,23 @@ const appRouter = createBrowserRouter([
     path: "/",
     element: <LandingPage />,
     children: [
-      {
-        path: "",
-        element: <ToAuth />,
-      },
-      {
-        path: "/signup",
-        element: <AuthWrapper type="signup" />,
-      },
-      {
-        path: "/login",
-        element: <AuthWrapper type="login" />,
-      },
+      { path: "", element: <ToAuth /> },
+      { path: "signup", element: <AuthWrapper type="signup" /> },
+      { path: "login", element: <AuthWrapper type="login" /> },
     ],
   },
   {
     path: "/dashboard",
     element: (
       <PrivateRoute>
-        <DashboardLayout>
-          <DashboardPage />
-        </DashboardLayout>
+        <DashboardLayout />
       </PrivateRoute>
     ),
+    children: [
+      { path: "", element: <DashboardPage /> },
+      // Add more dashboard sub-pages here, e.g.:
+      // { path: "settings", element: <SettingsPage /> },
+    ],
   },
 ]);
 
