@@ -29,7 +29,7 @@ const NewChat = () => {
           <PiPaintBrushDuotone className="h-[32px] w-[32px] text-white" />
         </div>
         <p className="font-inter text-[#171A1FFF] font-[400] text-lg">
-          "Industrial Revolution's impact on geopolitics."
+          "Art's role in shaping cultural identity and collective memory."
         </p>
       </div>
       <div className="h-18 w-3/4 rounded-md border-[1px] border-[#F3F4F6FF] border-solid flex items-center gap-3 hover:bg-gray-50 cursor-pointer">
