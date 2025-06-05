@@ -5,11 +5,13 @@ import { useApiRequest } from "../hooks/useApiRequest";
 import { useLogOut } from "../hooks/useLogOut";
 import { normalizeError } from "../utils/normalizeError";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
   const apiRequest = useApiRequest();
   const [sessions, setSessions] = useState([]);
   const logOut = useLogOut();
+  const navigate = useNavigate();
 
   const fetchSessions = useCallback(async () => {
     const url = "chat/sessions";
@@ -22,17 +24,6 @@ const Sidebar = () => {
       logOut();
     }
   }, [apiRequest, logOut]);
-
-  const startNewChat = async () => {
-    const url = "chat/start";
-    try {
-      const response = await apiRequest(url, { method: "POST" });
-    } catch (error) {
-      const message = normalizeError(error.message);
-      toast.error(message);
-      logOut();
-    }
-  };
 
   useEffect(() => {
     fetchSessions();
@@ -55,7 +46,7 @@ const Sidebar = () => {
       <button
         className="w-full h-10 flex justify-center items-center bg-[#171A1FFF] text-white rounded-lg font-inter text-sm font-[400]
        hover:bg-[#262A33FF]"
-        onClick={startNewChat}
+        onClick={() => navigate("/chat/?fresh=true")}
       >
         + New chat
       </button>
@@ -65,12 +56,13 @@ const Sidebar = () => {
             Conversation History
           </p>
           {sessions.map((item) => (
-            <p
-              className="text-[#565E6CFF] font-inter font-[400] cursor-pointer tracking-normal ml-2 hover:text-[#313338]"
+            <div
+              className="text-[#565E6CFF] font-inter font-[400] cursor-pointer tracking-normal ml-2 hover:text-[#313338] hover:bg-red-100 p-1 hover:rounder-md"
               key={item.id}
+              onClick={() => navigate(`c/${item.id}`)}
             >
-              {item.title}
-            </p>
+              <p>{item.title}</p>
+            </div>
           ))}
         </div>
       </div>

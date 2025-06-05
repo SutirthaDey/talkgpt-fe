@@ -31,7 +31,7 @@ const appRouter = createBrowserRouter([
         element: <ChatPage />,
         children: [
           { path: "", element: <NewChat /> },
-          { path: "c", element: <Conversation /> },
+          { path: "c/:id", element: <Conversation /> },
         ],
       },
     ],

@@ -3,8 +3,14 @@ import { FaCode } from "react-icons/fa6";
 import { PiPaintBrushDuotone } from "react-icons/pi";
 import { RxQuestionMark } from "react-icons/rx";
 import { MdOutlineLocationOn } from "react-icons/md";
+import { useSearchParams } from "react-router-dom";
 
 const NewChat = () => {
+  const [searchParams] = useSearchParams();
+  const isFresh = searchParams.get("fresh") === "true";
+
+  if (isFresh) return <></>;
+
   return (
     <div className="flex flex-col justify-center items-center gap-5">
       <h1 className="font-archivo text-[48px] font-[700] text-[#171A1FFF] leading-[68px] mb-10">
