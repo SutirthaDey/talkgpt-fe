@@ -32,7 +32,10 @@ const Sidebar = () => {
   return (
     <div className="min-w-72 h-full bg-[#FDF1F5FF] rounded-2xl flex flex-col items-center px-3 gap-3">
       <div className="w-full h-20 flex items-center justify-between">
-        <div className="flex items-center">
+        <div
+          className="flex items-center cursor-pointer"
+          onClick={() => navigate("/chat")}
+        >
           <img src="/assests/selection.png" alt="logo" className="h-12 w-12" />
           <h2 className="font-archivo text-[#000000FF] text-xl font-bold">
             AnyChat
