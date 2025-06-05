@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { BiSearchAlt } from "react-icons/bi";
 import { BsThreeDots } from "react-icons/bs";
 import { useApiRequest } from "../hooks/useApiRequest";
@@ -8,7 +8,21 @@ import toast from "react-hot-toast";
 
 const Sidebar = () => {
   const apiRequest = useApiRequest();
+  const [sessions, setSessions] = useState([]);
   const logOut = useLogOut();
+
+  const fetchSessions = useCallback(async () => {
+    const url = "chat/sessions";
+    try {
+      const { data } = await apiRequest(url);
+      setSessions(data);
+    } catch (error) {
+      const message = normalizeError(error.message);
+      toast.error(message);
+      logOut();
+    }
+  }, [apiRequest, logOut]);
+
   const startNewChat = async () => {
     const url = "chat/start";
     try {
@@ -19,6 +33,11 @@ const Sidebar = () => {
       logOut();
     }
   };
+
+  useEffect(() => {
+    fetchSessions();
+  }, [fetchSessions]);
+
   return (
     <div className="min-w-72 h-full bg-[#FDF1F5FF] rounded-2xl flex flex-col items-center px-3 gap-3">
       <div className="w-full h-20 flex items-center justify-between">
@@ -43,73 +62,16 @@ const Sidebar = () => {
       <div className="h-4/6 w-full overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent">
         <div className="flex flex-col gap-3 my-5">
           <p className="font-archivo text-[12px] font-[500] text-[#171A1F66]">
-            Today
+            Conversation History
           </p>
-          <p className="text-[#565E6CFF] font-inter font-[400] cursor-pointer tracking-normal ml-2 hover:text-[#313338]">
-            Hello world again
-          </p>
-          <p className="text-[#565E6CFF] font-inter font-[400] cursor-pointer tracking-normal ml-2 hover:text-[#313338]">
-            Stay strong always
-          </p>
-          <p className="text-[#565E6CFF] font-inter font-[400] cursor-pointer tracking-normal ml-2 hover:text-[#313338]">
-            Enjoy your life
-          </p>
-          <p className="text-[#565E6CFF] font-inter font-[400] cursor-pointer tracking-normal ml-2 hover:text-[#313338]">
-            Keep moving forward
-          </p>
-          <p className="text-[#565E6CFF] font-inter font-[400] cursor-pointer tracking-normal ml-2 hover:text-[#313338]">
-            Learn something new
-          </p>
-          <p className="text-[#565E6CFF] font-inter font-[400] cursor-pointer tracking-normal ml-2 hover:text-[#313338]">
-            Time flies fast
-          </p>
-          <p className="text-[#565E6CFF] font-inter font-[400] cursor-pointer tracking-normal ml-2 hover:text-[#313338]">
-            Love conquers all
-          </p>
-          <p className="text-[#565E6CFF] font-inter font-[400] cursor-pointer tracking-normal ml-2 hover:text-[#313338]">
-            Dreams become reality
-          </p>
-          <p className="text-[#565E6CFF] font-inter font-[400] cursor-pointer tracking-normal ml-2 hover:text-[#313338]">
-            Silence is golden
-          </p>
-          <p className="text-[#565E6CFF] font-inter font-[400] cursor-pointer tracking-normal ml-2 hover:text-[#313338]">
-            Knowledge is power
-          </p>
-        </div>
-        <div className="flex flex-col gap-3 my-5">
-          <p className="font-archivo text-[12px] font-[500] text-[#171A1F66]">
-            Previous 30 Days
-          </p>
-          <p className="text-[#565E6CFF] font-inter font-[400] cursor-pointer tracking-normal ml-2 hover:text-[#313338]">
-            Hello world again
-          </p>
-          <p className="text-[#565E6CFF] font-inter font-[400] cursor-pointer tracking-normal ml-2 hover:text-[#313338]">
-            Stay strong always
-          </p>
-          <p className="text-[#565E6CFF] font-inter font-[400] cursor-pointer tracking-normal ml-2 hover:text-[#313338]">
-            Enjoy your life
-          </p>
-          <p className="text-[#565E6CFF] font-inter font-[400] cursor-pointer tracking-normal ml-2 hover:text-[#313338]">
-            Keep moving forward
-          </p>
-          <p className="text-[#565E6CFF] font-inter font-[400] cursor-pointer tracking-normal ml-2 hover:text-[#313338]">
-            Learn something new
-          </p>
-          <p className="text-[#565E6CFF] font-inter font-[400] cursor-pointer tracking-normal ml-2 hover:text-[#313338]">
-            Time flies fast
-          </p>
-          <p className="text-[#565E6CFF] font-inter font-[400] cursor-pointer tracking-normal ml-2 hover:text-[#313338]">
-            Love conquers all
-          </p>
-          <p className="text-[#565E6CFF] font-inter font-[400] cursor-pointer tracking-normal ml-2 hover:text-[#313338]">
-            Dreams become reality
-          </p>
-          <p className="text-[#565E6CFF] font-inter font-[400] cursor-pointer tracking-normal ml-2 hover:text-[#313338]">
-            Silence is golden
-          </p>
-          <p className="text-[#565E6CFF] font-inter font-[400] cursor-pointer tracking-normal ml-2 hover:text-[#313338]">
-            Knowledge is power
-          </p>
+          {sessions.map((item) => (
+            <p
+              className="text-[#565E6CFF] font-inter font-[400] cursor-pointer tracking-normal ml-2 hover:text-[#313338]"
+              key={item.id}
+            >
+              {item.title}
+            </p>
+          ))}
         </div>
       </div>
 
