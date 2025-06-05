@@ -27,7 +27,7 @@ const Sidebar = () => {
 
   useEffect(() => {
     fetchSessions();
-  }, [fetchSessions]);
+  }, []);
 
   return (
     <div className="min-w-72 h-full bg-[#FDF1F5FF] rounded-2xl flex flex-col items-center px-3 gap-3">
