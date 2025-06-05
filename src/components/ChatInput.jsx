@@ -14,13 +14,13 @@ const ChatInput = ({ message, setMessage }) => {
         />
         <button
           onClick={(e) => setMessage(e.target.value)}
-          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#636AE8FF]"
+          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#636AE8FF] hover:text-[#7c81e6]"
         >
           <BsFillSendFill className="size-6" />
         </button>
-        <button className="absolute right-12 top-1/2 transform -translate-y-1/2 text-gray-600">
+        {/* <button className="absolute right-12 top-1/2 transform -translate-y-1/2 text-gray-600">
           <GrMicrophone className="size-5" />
-        </button>
+        </button> */}
       </div>
     </div>
   );
