@@ -4,7 +4,6 @@ import { MdVisibilityOff } from "react-icons/md";
 import { useAuth } from "../../contexts/AuthContext";
 import { useApiRequest } from "../../hooks/useApiRequest";
 import { useNavigate } from "react-router-dom";
-import { useLogOut } from "../../hooks/useLogOut";
 import { saveUserAndTokens } from "../../utils/saveUserAndTokens";
 import { toast } from "react-hot-toast";
 import { normalizeError } from "../../utils/normalizeError";
@@ -14,7 +13,6 @@ const ManualAuth = ({ type }) => {
   const { setIsAuthenticated } = useAuth();
   const apiRequest = useApiRequest();
   const navigate = useNavigate();
-  const logOut = useLogOut;
 
   const handleSubmit = async (e) => {
     e.preventDefault();

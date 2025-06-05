@@ -1,9 +1,8 @@
-import React from "react";
-import Sidebar from "../../components/Sidebar";
+import Sidebar from "../components/Sidebar";
 import { Outlet } from "react-router-dom";
 // import Header from "./Header";
 
-const ChatLayout = ({ children }) => {
+const GlobalLayout = ({ children }) => {
   return (
     <div className="h-[98vh] w-screen p-3 flex gap-2 overflow-hidden">
       <Sidebar />
@@ -15,4 +14,4 @@ const ChatLayout = ({ children }) => {
   );
 };
 
-export default ChatLayout;
+export default GlobalLayout;

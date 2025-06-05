@@ -2,9 +2,11 @@ import { createBrowserRouter } from "react-router-dom";
 import LandingPage from "../pages/LandingPage";
 import AuthWrapper from "../features/Auth/AuthWrapper";
 import ToAuth from "../features/Auth/ToAuth";
-import ChatLayout from "../features/Layout/ChatLayout";
+import GlobalLayout from "../layouts/GlobalLayout";
 import ChatPage from "../pages/ChatPage";
 import PrivateRoute from "../components/PrivateRoute";
+import NewChat from "../features/Chat/NewChat";
+import Conversation from "../features/Chat/Conversation";
 
 const appRouter = createBrowserRouter([
   {
@@ -20,13 +22,18 @@ const appRouter = createBrowserRouter([
     path: "/chat",
     element: (
       <PrivateRoute>
-        <ChatLayout />
+        <GlobalLayout />
       </PrivateRoute>
     ),
     children: [
-      { path: "", element: <ChatPage /> },
-      // Add more chat sub-pages here, e.g.:
-      // { path: "settings", element: <SettingsPage /> },
+      {
+        path: "",
+        element: <ChatPage />,
+        children: [
+          { path: "", element: <NewChat /> },
+          { path: "c", element: <Conversation /> },
+        ],
+      },
     ],
   },
 ]);
