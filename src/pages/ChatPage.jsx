@@ -84,22 +84,36 @@ const ChatPage = () => {
   const sendMessage = async () => {
     if (!message) return;
 
+    const useMessage = {
+      id: uuidv4(),
+      message,
+      role: "user",
+      createdAt: new Date(),
+    };
+
     try {
-      setChatHistory((prev) => [
-        ...prev,
-        { id: uuidv4(), message, role: "user", createdAt: new Date() },
-      ]);
+      setChatHistory((prev) => [...prev, useMessage]);
 
       const path = `chat/${id}`;
 
       await apiRequest(path, {
         method: "POST",
-        body: { message: message },
+        body: {
+          message: message,
+          chatHistory: [...chatHistory, useMessage]
+            .map((c) => {
+              return {
+                role: c.role,
+                content: c.message,
+              };
+            })
+            .slice(-10),
+        },
       });
 
       setMessage("");
     } catch {
-      toast.error("Could not send message.");
+      toast.error("Could not fetch messages. Try again.");
     }
   };
 
