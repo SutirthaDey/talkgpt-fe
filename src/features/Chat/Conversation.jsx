@@ -4,7 +4,6 @@ import { useOutletContext } from "react-router-dom";
 
 const Conversation = () => {
   const { chatHistory } = useOutletContext();
-  console.log(chatHistory);
   return (
     <div className="flex flex-col gap-10">
       {chatHistory?.map((conv) => (
@@ -13,6 +12,7 @@ const Conversation = () => {
             "flex",
             conv.role === "user" ? "justify-end" : "justify-start"
           )}
+          key={conv.id}
         >
           <div
             className={clsx(

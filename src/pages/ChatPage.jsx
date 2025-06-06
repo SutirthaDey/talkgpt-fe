@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
+import { v4 as uuidv4 } from "uuid";
 import ChatInput from "../components/ChatInput";
 import { Outlet } from "react-router-dom";
 import { useApiRequest } from "../hooks/useApiRequest";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import { baseUrl } from "../constants/enviroment";
 
 const ChatPage = () => {
   const { id } = useParams();
   const [chatHistory, setChatHistory] = useState([]);
   const [message, setMessage] = useState("");
   const apiRequest = useApiRequest();
-
-  useEffect(() => {}, [message]);
+  const eventSourceRef = useRef(null);
 
   useEffect(() => {
     async function fetchHistoryByChat() {
@@ -30,13 +31,89 @@ const ChatPage = () => {
     if (id) fetchHistoryByChat();
   }, [id, apiRequest]);
 
+  useEffect(() => {
+    const path = `streaming/stream/${id}`;
+    // Connect to SSE stream
+    const source = new EventSource(baseUrl + path);
+    eventSourceRef.current = source;
+    let isFirstChunk = true;
+    let lastMessageId = null;
+
+    source.onmessage = async (event) => {
+      const chunk = JSON.parse(event.data)?.data || "";
+
+      if (chunk === "[STREAM_END]") {
+        isFirstChunk = true;
+        // source.close();
+        return;
+      }
+
+      if (isFirstChunk) {
+        lastMessageId = uuidv4();
+
+        setChatHistory((prev) => [
+          ...prev,
+          {
+            id: lastMessageId,
+            message: "",
+            role: "system",
+            createdAt: new Date(),
+          },
+        ]);
+
+        isFirstChunk = false;
+      }
+
+      setChatHistory((prev) =>
+        prev.map((c) =>
+          c.id === lastMessageId ? { ...c, message: `${c.message}${chunk}` } : c
+        )
+      );
+    };
+
+    source.onerror = (err) => {
+      console.error("SSE error:", err);
+      source.close();
+    };
+
+    return () => {
+      source.close();
+    };
+  }, [id]);
+
+  const sendMessage = async () => {
+    if (!message) return;
+
+    try {
+      setChatHistory((prev) => [
+        ...prev,
+        { id: uuidv4(), message, role: "user", createdAt: new Date() },
+      ]);
+
+      const path = `chat/${id}`;
+
+      await apiRequest(path, {
+        method: "POST",
+        body: { message: message },
+      });
+
+      setMessage("");
+    } catch {
+      toast.error("Could not send message.");
+    }
+  };
+
   return (
     <div className="w-full min-h-96 h-screen flex flex-col overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent mt-5 py-5 relative">
       <div className="mt-5 mb-10 w-[55%] mx-auto flex flex-col pb-24">
         <Outlet context={{ setMessage, chatHistory }}></Outlet>
       </div>
 
-      <ChatInput message={message} setMessage={setMessage} />
+      <ChatInput
+        message={message}
+        setMessage={setMessage}
+        sendMessage={sendMessage}
+      />
     </div>
   );
 };
