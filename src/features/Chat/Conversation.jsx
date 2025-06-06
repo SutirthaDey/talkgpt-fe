@@ -1,9 +1,15 @@
 import clsx from "clsx";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useOutletContext } from "react-router-dom";
 
 const Conversation = () => {
+  const bottomRef = useRef(null);
   const { chatHistory } = useOutletContext();
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chatHistory]);
+
   return (
     <div className="flex flex-col gap-10">
       {chatHistory?.map((conv) => (
@@ -26,6 +32,7 @@ const Conversation = () => {
           </div>
         </div>
       ))}
+      <div ref={bottomRef} />
     </div>
   );
 };
