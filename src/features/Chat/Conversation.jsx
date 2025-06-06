@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import React, { useEffect, useRef } from "react";
 import { useOutletContext } from "react-router-dom";
+import { MarkdownRenderer } from "../../components/MarkDownRenderer";
 
 const Conversation = () => {
   const bottomRef = useRef(null);
@@ -24,11 +25,11 @@ const Conversation = () => {
             className={clsx(
               "w-fit px-3 py-2 break-words rounded-2xl",
               conv.role === "user"
-                ? "max-w-[33%] bg-[#636AE81A]  rounded-br-none"
+                ? "max-w-[50%] bg-[#636AE81A]  rounded-br-none"
                 : "max-w-[100%] border-2 border-solid border-[#F3F4F6FF] rounded-tl-none"
             )}
           >
-            <p>{conv.message}</p>
+            <MarkdownRenderer content={conv.message} />
           </div>
         </div>
       ))}

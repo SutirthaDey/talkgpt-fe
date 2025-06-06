@@ -119,7 +119,7 @@ const ChatPage = () => {
 
   return (
     <div className="w-full min-h-96 h-screen flex flex-col overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent mt-5 py-5 relative">
-      <div className="mt-5 mb-10 w-[55%] mx-auto flex flex-col pb-24">
+      <div className="mt-5 mb-10 w-[70%] mx-auto flex flex-col pb-24">
         <Outlet context={{ setMessage, chatHistory }}></Outlet>
       </div>
 
