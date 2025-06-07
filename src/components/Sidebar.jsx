@@ -1,12 +1,46 @@
 import { BiSearchAlt } from "react-icons/bi";
 import { BsThreeDots } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import SessionsContext from "../contexts/SessionContext";
+import { TbLogout } from "react-icons/tb";
+import toast from "react-hot-toast";
+import { useLogOut } from "../hooks/useLogOut";
 
 const Sidebar = () => {
   const { sessions } = useContext(SessionsContext);
+  const [showModal, setShowModal] = useState(false);
+  const logOut = useLogOut();
   const navigate = useNavigate();
+
+  const modalRef = useRef(null);
+
+  // Close modal if click is outside the modal box
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        setShowModal(false);
+      }
+    };
+
+    if (showModal) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showModal]);
+
+  const handleLogout = () => {
+    setShowModal(false);
+    logOut();
+    toast.success("Logged Out Successfully!");
+  };
+
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
 
   return (
     <div className="min-w-72 h-full bg-[#FDF1F5FF] rounded-2xl flex flex-col items-center px-3 gap-3">
@@ -50,7 +84,7 @@ const Sidebar = () => {
       </div>
 
       <div className="h-28 w-60 flex flex-col gap-3 bg-white rounded-md border-[#F8CEDBFF] border-solid px-3 pt-4">
-        <div className="flex items-center justify-between">
+        <div className="relative flex items-center justify-between">
           <div className="flex justify-center items-center gap-3">
             <img
               src="/assests/G1.jpg"
@@ -61,7 +95,29 @@ const Sidebar = () => {
               Emily
             </p>
           </div>
-          <BsThreeDots className="size-6 text-gray-600 hover:text-black" />
+          <BsThreeDots
+            className="size-6 text-gray-600 hover:text-black"
+            onClick={() => toggleModal()}
+          />
+          {showModal && (
+            <div
+              className={`absolute top-[-15px] right-[-160px] z-50 w-36 h-14 rounded-md border border-gray-200 bg-white shadow-md cursor-pointer transition-all duration-300 ease-in-out transform ${
+                showModal
+                  ? "opacity-100 scale-100"
+                  : "opacity-0 scale-95 pointer-events-none"
+              }`}
+            >
+              <div className="flex items-center gap-2 h-full px-3">
+                <TbLogout className="text-red-500 size-6 hover:text-red-600 transition-colors" />
+                <p
+                  className="text-sm font-medium text-gray-700 font-sans hover:text-gray-900 transition-colors"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </p>
+              </div>
+            </div>
+          )}
         </div>
         <button className="flex justify-center items-center font-[400] font-inter bg-[#FDF1F5FF] text-[#E8618CFF] py-2 text-xs rounded-md hover:bg-[#FBE0E8FF] hover:text-[#E8618CFF]">
           Upgrade to Pro

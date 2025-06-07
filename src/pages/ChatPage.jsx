@@ -130,7 +130,7 @@ const ChatPage = () => {
 
   useEffect(() => {
     if (!user) return;
-    const userId = JSON.parse(user).id; // or however you store it
+    const userId = typeof user == "object" ? user.id : JSON.parse(user).id; // or however you store it
 
     if (!userId) return;
 

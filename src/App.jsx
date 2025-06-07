@@ -8,14 +8,14 @@ import { SessionsProvider } from "./contexts/SessionContext";
 
 function App() {
   return (
-    <UserProvider>
-      <SessionsProvider>
-        <AuthProvider>
+    <AuthProvider>
+      <UserProvider>
+        <SessionsProvider>
           <Toaster position="top-center" />
           <RouterProvider router={appRouter} />
-        </AuthProvider>
-      </SessionsProvider>
-    </UserProvider>
+        </SessionsProvider>
+      </UserProvider>
+    </AuthProvider>
   );
 }
 
