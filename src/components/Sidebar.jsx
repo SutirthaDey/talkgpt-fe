@@ -6,10 +6,12 @@ import SessionsContext from "../contexts/SessionContext";
 import { TbLogout } from "react-icons/tb";
 import toast from "react-hot-toast";
 import { useLogOut } from "../hooks/useLogOut";
+import { UserContext } from "../contexts/UserContext";
 
 const Sidebar = () => {
   const { sessions } = useContext(SessionsContext);
   const [showModal, setShowModal] = useState(false);
+  const { user } = useContext(UserContext);
   const logOut = useLogOut();
   const navigate = useNavigate();
 
@@ -92,7 +94,7 @@ const Sidebar = () => {
               className="h-9 w-9 rounded-full bg-[#E8618CFF]"
             />
             <p className="font-inter text-sm font-bold text-[#171A1FFF]">
-              Emily
+              {user?.profile?.firstName || "Welcome!"}
             </p>
           </div>
           <BsThreeDots
