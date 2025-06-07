@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 
 import { v4 as uuidv4 } from "uuid";
 import ChatInput from "../components/ChatInput";
@@ -7,11 +7,13 @@ import { useApiRequest } from "../hooks/useApiRequest";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { baseUrl } from "../constants/enviroment";
+import { UserContext } from "../contexts/UserContext";
 
 const ChatPage = () => {
   let { id } = useParams();
   const [chatHistory, setChatHistory] = useState([]);
   const [message, setMessage] = useState("");
+  const { user } = useContext(UserContext);
   const apiRequest = useApiRequest();
   const eventSourceRef = useRef(null);
   const navigate = useNavigate();
@@ -115,12 +117,37 @@ const ChatPage = () => {
             .slice(-10),
         },
       });
-
-      if (!id) navigate(`/chat/c/${data.sessionId}`);
     } catch {
       toast.error("Could not fetch messages. Try again.");
     }
   };
+
+  useEffect(() => {
+    if (!user) return;
+    const userId = JSON.parse(user).id; // or however you store it
+
+    console.log(userId);
+
+    if (!userId) return;
+
+    const source = new EventSource(`${baseUrl}streaming/sessions/${userId}`);
+
+    source.onmessage = (event) => {
+      const sessionId = JSON.parse(event.data)?.data;
+
+      console.log("New sessionId received from SSE:", sessionId);
+      navigate(`/chat/c/${sessionId}`);
+    };
+
+    source.onerror = (err) => {
+      console.error("Session SSE error:", err);
+      source.close();
+    };
+
+    return () => {
+      source.close();
+    };
+  }, [user, navigate]);
 
   return (
     <div className="w-full min-h-96 h-screen flex flex-col overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-thumb-rounded-full scrollbar-track-transparent mt-5 py-5 relative">

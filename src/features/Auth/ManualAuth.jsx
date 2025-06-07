@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { MdVisibility } from "react-icons/md";
 import { MdVisibilityOff } from "react-icons/md";
 import { useAuth } from "../../contexts/AuthContext";
@@ -7,9 +7,11 @@ import { useNavigate } from "react-router-dom";
 import { saveUserAndTokens } from "../../utils/saveUserAndTokens";
 import { toast } from "react-hot-toast";
 import { normalizeError } from "../../utils/normalizeError";
+import { UserContext } from "../../contexts/UserContext";
 
 const ManualAuth = ({ type }) => {
   const [showPassword, setShowPassword] = useState(false);
+  const { setUser } = useContext(UserContext);
   const { setIsAuthenticated } = useAuth();
   const apiRequest = useApiRequest();
   const navigate = useNavigate();
@@ -34,6 +36,7 @@ const ManualAuth = ({ type }) => {
         refreshToken: data.refreshToken,
       });
 
+      setUser(data.user);
       setIsAuthenticated(true);
 
       navigate("/chat");
