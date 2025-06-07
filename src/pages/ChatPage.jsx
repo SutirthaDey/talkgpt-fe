@@ -8,12 +8,14 @@ import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { baseUrl } from "../constants/enviroment";
 import { UserContext } from "../contexts/UserContext";
+import SessionsContext from "../contexts/SessionContext";
 
 const ChatPage = () => {
   let { id } = useParams();
   const [chatHistory, setChatHistory] = useState([]);
   const [message, setMessage] = useState("");
   const { user } = useContext(UserContext);
+  const { setSessions } = useContext(SessionsContext);
   const apiRequest = useApiRequest();
   const eventSourceRef = useRef(null);
   const navigate = useNavigate();
@@ -117,6 +119,10 @@ const ChatPage = () => {
             .slice(-10),
         },
       });
+
+      if (data?.session) {
+        setSessions((prev) => [data.session, ...prev]);
+      }
     } catch {
       toast.error("Could not fetch messages. Try again.");
     }
@@ -126,16 +132,12 @@ const ChatPage = () => {
     if (!user) return;
     const userId = JSON.parse(user).id; // or however you store it
 
-    console.log(userId);
-
     if (!userId) return;
 
     const source = new EventSource(`${baseUrl}streaming/sessions/${userId}`);
 
     source.onmessage = (event) => {
       const sessionId = JSON.parse(event.data)?.data;
-
-      console.log("New sessionId received from SSE:", sessionId);
       navigate(`/chat/c/${sessionId}`);
     };
 

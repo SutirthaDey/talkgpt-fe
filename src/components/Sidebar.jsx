@@ -1,33 +1,12 @@
-import React, { useCallback, useEffect, useState } from "react";
 import { BiSearchAlt } from "react-icons/bi";
 import { BsThreeDots } from "react-icons/bs";
-import { useApiRequest } from "../hooks/useApiRequest";
-import { useLogOut } from "../hooks/useLogOut";
-import { normalizeError } from "../utils/normalizeError";
-import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import SessionsContext from "../contexts/SessionContext";
 
 const Sidebar = () => {
-  const apiRequest = useApiRequest();
-  const [sessions, setSessions] = useState([]);
-  const logOut = useLogOut();
+  const { sessions } = useContext(SessionsContext);
   const navigate = useNavigate();
-
-  const fetchSessions = useCallback(async () => {
-    const url = "chat/sessions";
-    try {
-      const { data } = await apiRequest(url);
-      setSessions(data);
-    } catch (error) {
-      const message = normalizeError(error.message);
-      toast.error(message);
-      logOut();
-    }
-  }, [apiRequest, logOut]);
-
-  useEffect(() => {
-    fetchSessions();
-  }, []);
 
   return (
     <div className="min-w-72 h-full bg-[#FDF1F5FF] rounded-2xl flex flex-col items-center px-3 gap-3">
