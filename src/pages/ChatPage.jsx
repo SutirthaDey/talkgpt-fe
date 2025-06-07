@@ -2,18 +2,19 @@ import React, { useEffect, useRef, useState } from "react";
 
 import { v4 as uuidv4 } from "uuid";
 import ChatInput from "../components/ChatInput";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useApiRequest } from "../hooks/useApiRequest";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { baseUrl } from "../constants/enviroment";
 
 const ChatPage = () => {
-  const { id } = useParams();
+  let { id } = useParams();
   const [chatHistory, setChatHistory] = useState([]);
   const [message, setMessage] = useState("");
   const apiRequest = useApiRequest();
   const eventSourceRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchHistoryByChat() {
@@ -32,6 +33,9 @@ const ChatPage = () => {
   }, [id, apiRequest]);
 
   useEffect(() => {
+    if (!id) return;
+    setChatHistory([]);
+
     const path = `streaming/stream/${id}`;
     // Connect to SSE stream
     const source = new EventSource(baseUrl + path);
@@ -93,10 +97,11 @@ const ChatPage = () => {
 
     try {
       setChatHistory((prev) => [...prev, useMessage]);
+      setMessage("");
 
-      const path = `chat/${id}`;
+      const path = id ? `chat/${id}` : "chat";
 
-      await apiRequest(path, {
+      const { data } = await apiRequest(path, {
         method: "POST",
         body: {
           message: message,
@@ -111,14 +116,14 @@ const ChatPage = () => {
         },
       });
 
-      setMessage("");
+      if (!id) navigate(`/chat/c/${data.sessionId}`);
     } catch {
       toast.error("Could not fetch messages. Try again.");
     }
   };
 
   return (
-    <div className="w-full min-h-96 h-screen flex flex-col overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent mt-5 py-5 relative">
+    <div className="w-full min-h-96 h-screen flex flex-col overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-thumb-rounded-full scrollbar-track-transparent mt-5 py-5 relative">
       <div className="mt-5 mb-10 w-[70%] mx-auto flex flex-col pb-24">
         <Outlet context={{ setMessage, chatHistory }}></Outlet>
       </div>
