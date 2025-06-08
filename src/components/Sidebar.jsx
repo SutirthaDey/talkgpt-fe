@@ -89,9 +89,9 @@ const Sidebar = () => {
         <div className="relative flex items-center justify-between">
           <div className="flex justify-center items-center gap-3">
             <img
-              src="/assests/G1.jpg"
+              src={user?.profile?.profilePic ?? "/assests/G1.jpg"}
               alt="avatar"
-              className="h-9 w-9 rounded-full bg-[#E8618CFF]"
+              className="h-9 w-9 rounded-full object-fit bg-[#E8618CFF]"
             />
             <p className="font-inter text-sm font-bold text-[#171A1FFF]">
               {user?.profile?.firstName || "Welcome!"}
