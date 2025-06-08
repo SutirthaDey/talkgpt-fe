@@ -46,7 +46,15 @@ const NewChat = () => {
     setMessage(text);
   };
 
-  if (isFresh) return <></>;
+  if (isFresh) {
+    return (
+      <div className="h-full w-full flex justify-center items-end">
+        <h1 className="font-archivo text-[48px] font-[700] text-[#171A1FFF] leading-[68px] text-center px-4">
+          What's on your mind?
+        </h1>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col justify-center items-center gap-5">
