@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { baseUrl } from "../constants/enviroment";
 import { UserContext } from "../contexts/UserContext";
 import SessionsContext from "../contexts/SessionContext";
+import FancyDynamicLoader from "../components/FancyDynamicLoader";
 
 const ChatPage = () => {
   let { id } = useParams();
@@ -19,10 +20,12 @@ const ChatPage = () => {
   const apiRequest = useApiRequest();
   const eventSourceRef = useRef(null);
   const navigate = useNavigate();
+  const [isLoader, setIsLoader] = useState(false);
 
   useEffect(() => {
     async function fetchHistoryByChat() {
       const path = `chat/${id}`;
+      setIsLoader(false);
       try {
         const response = await apiRequest(path);
         const data = response.data;
@@ -104,6 +107,9 @@ const ChatPage = () => {
       setMessage("");
 
       const path = id ? `chat/${id}` : "chat";
+      if (!id) {
+        setIsLoader(true);
+      }
 
       const { data } = await apiRequest(path, {
         method: "POST",
@@ -122,6 +128,8 @@ const ChatPage = () => {
 
       if (data?.session) {
         setSessions((prev) => [data.session, ...prev]);
+        navigate(`/chat/c/${data.session.id}`);
+        setIsLoader(false);
       }
     } catch {
       toast.error("Could not fetch messages. Try again.");
@@ -137,8 +145,8 @@ const ChatPage = () => {
     const source = new EventSource(`${baseUrl}streaming/sessions/${userId}`);
 
     source.onmessage = (event) => {
-      const sessionId = JSON.parse(event.data)?.data;
-      navigate(`/chat/c/${sessionId}`);
+      // const sessionId = JSON.parse(event.data)?.data;
+      // navigate(`/chat/c/${sessionId}`);
     };
 
     source.onerror = (err) => {
@@ -150,6 +158,8 @@ const ChatPage = () => {
       source.close();
     };
   }, [user, navigate]);
+
+  if (!isLoader) return <FancyDynamicLoader />;
 
   return (
     <div className="w-full min-h-96 h-screen flex flex-col overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-thumb-rounded-full scrollbar-track-transparent mt-5 py-5 relative">

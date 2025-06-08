@@ -7,6 +7,7 @@ import { TbLogout } from "react-icons/tb";
 import toast from "react-hot-toast";
 import { useLogOut } from "../hooks/useLogOut";
 import { UserContext } from "../contexts/UserContext";
+import { useParams } from "react-router-dom";
 
 const Sidebar = () => {
   const { sessions } = useContext(SessionsContext);
@@ -14,6 +15,7 @@ const Sidebar = () => {
   const { user } = useContext(UserContext);
   const logOut = useLogOut();
   const navigate = useNavigate();
+  const { id: currentSessionId } = useParams();
 
   const modalRef = useRef(null);
 
@@ -73,15 +75,27 @@ const Sidebar = () => {
           <p className="font-archivo text-[12px] font-[500] text-[#171A1F66]">
             Conversation History
           </p>
-          {sessions.map((item) => (
-            <div
-              className="text-[#565E6CFF] font-inter font-[400] cursor-pointer tracking-normal ml-2 hover:text-[#313338] hover:bg-red-100 p-1 hover:rounder-md"
-              key={item.id}
-              onClick={() => navigate(`c/${item.id}`)}
-            >
-              <p>{item.title}</p>
-            </div>
-          ))}
+          {sessions.map((item) => {
+            const isActive = item.id === currentSessionId;
+
+            return (
+              <div
+                key={item.id}
+                onClick={() => navigate(`c/${item.id}`)}
+                className={`flex items-center gap-2 ml-2 p-1 rounded-md cursor-pointer transition-all
+        ${
+          isActive
+            ? "bg-[#FBE0E8FF] text-[#E8618CFF] font-semibold"
+            : "hover:text-[#313338] hover:bg-red-100 text-[#565E6CFF]"
+        }`}
+              >
+                {isActive && (
+                  <span className="h-2 w-2 bg-green-500 rounded-full animate-pulse"></span>
+                )}
+                <p className="truncate">{item.title}</p>
+              </div>
+            );
+          })}
         </div>
       </div>
 
