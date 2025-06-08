@@ -2,35 +2,39 @@ import { createBrowserRouter } from "react-router-dom";
 import LandingPage from "../pages/LandingPage";
 import AuthWrapper from "../features/Auth/AuthWrapper";
 import ToAuth from "../features/Auth/ToAuth";
-import DashboardLayout from "../features/Layout/DashboardLayout";
-import DashboardPage from "../pages/DashboardPage";
+import GlobalLayout from "../layouts/GlobalLayout";
+import ChatPage from "../pages/ChatPage";
+import PrivateRoute from "../components/PrivateRoute";
+import NewChat from "../features/Chat/NewChat";
+import Conversation from "../features/Chat/Conversation";
 
 const appRouter = createBrowserRouter([
   {
     path: "/",
     element: <LandingPage />,
     children: [
-      {
-        path: "",
-        element: <ToAuth />,
-      },
-      {
-        path: "/signup",
-        element: <AuthWrapper type="signup" />,
-      },
-      {
-        path: "/login",
-        element: <AuthWrapper type="login" />,
-      },
+      { path: "", element: <ToAuth /> },
+      { path: "signup", element: <AuthWrapper type="signup" /> },
+      { path: "login", element: <AuthWrapper type="login" /> },
     ],
   },
   {
-    path: "/dashboard",
+    path: "/chat",
     element: (
-      <DashboardLayout>
-        <DashboardPage />
-      </DashboardLayout>
+      <PrivateRoute>
+        <GlobalLayout />
+      </PrivateRoute>
     ),
+    children: [
+      {
+        path: "",
+        element: <ChatPage />,
+        children: [
+          { path: "", element: <NewChat /> },
+          { path: "c/:id", element: <Conversation /> },
+        ],
+      },
+    ],
   },
 ]);
 

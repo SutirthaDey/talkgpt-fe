@@ -1,13 +1,56 @@
-import React from "react";
+import { useContext, useState } from "react";
+import { MdVisibility } from "react-icons/md";
+import { MdVisibilityOff } from "react-icons/md";
+import { useAuth } from "../../contexts/AuthContext";
+import { useApiRequest } from "../../hooks/useApiRequest";
 import { useNavigate } from "react-router-dom";
+import { saveUserAndTokens } from "../../utils/saveUserAndTokens";
+import { toast } from "react-hot-toast";
+import { normalizeError } from "../../utils/normalizeError";
+import { UserContext } from "../../contexts/UserContext";
 
 const ManualAuth = ({ type }) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const { setUser } = useContext(UserContext);
+  const { setIsAuthenticated } = useAuth();
+  const apiRequest = useApiRequest();
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(e.target.email.value);
-    console.log(e.target.password.value);
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    const url = type === "signup" ? "auth/sign-up" : "auth/sign-in";
+
+    try {
+      const response = await apiRequest(url, {
+        method: "POST",
+        needAuth: false,
+        body: { email, password },
+      });
+
+      const { data } = response;
+
+      saveUserAndTokens(data.user, {
+        accessToken: data.accessToken,
+        refreshToken: data.refreshToken,
+      });
+
+      setUser(data.user);
+      setIsAuthenticated(true);
+
+      navigate("/chat");
+
+      const toastMessage =
+        type === "signup"
+          ? "Account created successfully"
+          : "Logged in successfully";
+
+      toast.success(toastMessage);
+    } catch (error) {
+      const message = normalizeError(error.message);
+      toast.error(message);
+    }
   };
 
   return (
@@ -34,10 +77,27 @@ const ManualAuth = ({ type }) => {
           >
             Password
           </label>
-          <input
-            id="password"
-            className=" bg-[#F3F4F6FF] font-inter outline-none h-10 px-3 text-sm hover:bg-[#E5E7EBFF] focus:bg-[#E5E7EBFF] focus:outline-none focus:border-2 focus:border-blue-400 rounded-md transform"
-          ></input>
+          <div className="relative">
+            <input
+              id="password"
+              type={showPassword ? "text" : "password"}
+              placeholder="example.Abc@1234567"
+              className=" bg-[#F3F4F6FF] w-full font-inter outline-none h-10 px-3 text-sm hover:bg-[#E5E7EBFF] focus:bg-[#E5E7EBFF] focus:outline-none focus:border-2 focus:border-blue-400 rounded-md transform"
+            ></input>
+            <div className="absolute right-1 top-1/4">
+              {showPassword ? (
+                <MdVisibilityOff
+                  className="size-5 opacity-75"
+                  onClick={() => setShowPassword(false)}
+                />
+              ) : (
+                <MdVisibility
+                  className="size-5 opacity-75"
+                  onClick={() => setShowPassword(true)}
+                />
+              )}
+            </div>
+          </div>
         </div>
 
         <button

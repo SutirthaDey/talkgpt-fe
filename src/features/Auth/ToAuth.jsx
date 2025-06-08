@@ -11,7 +11,7 @@ const ToAuth = () => {
         className="mx-auto mt-8"
       ></img>
       <h1 className="text-[32px]  font-archivo  text-[#171A1FFF] font-semibold tracking-[0.020em] mt-1">
-        Unleash AnyChat Conversations
+        Unleash Nova.ai Conversations
       </h1>
       <p className="font-inter text-[16px] font-[400px] text-[#9095A0FF] mt-2 leading-6">
         To Continue, kindly log in with your account
