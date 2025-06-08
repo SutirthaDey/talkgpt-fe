@@ -109,7 +109,7 @@ const Sidebar = () => {
                   : "opacity-0 scale-95 pointer-events-none"
               }`}
             >
-              <div className="flex items-center gap-2 h-full px-3">
+              <div className="flex items-center gap-2 h-full px-3 hover:bg-gray-100">
                 <TbLogout className="text-red-500 size-6 hover:text-red-600 transition-colors" />
                 <p
                   className="text-sm font-medium text-gray-700 font-sans hover:text-gray-900 transition-colors"
