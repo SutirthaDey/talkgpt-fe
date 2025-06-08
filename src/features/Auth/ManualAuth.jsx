@@ -40,6 +40,13 @@ const ManualAuth = ({ type }) => {
       setIsAuthenticated(true);
 
       navigate("/chat");
+
+      const toastMessage =
+        type === "signup"
+          ? "Account created successfully"
+          : "Logged in successfully";
+
+      toast.success(toastMessage);
     } catch (error) {
       const message = normalizeError(error.message);
       toast.error(message);

@@ -53,7 +53,7 @@ const Sidebar = () => {
         >
           <img src="/assests/selection.png" alt="logo" className="h-12 w-12" />
           <h2 className="font-archivo text-[#000000FF] text-xl font-bold">
-            AnyChat
+            Nova.ai
           </h2>
         </div>
 
