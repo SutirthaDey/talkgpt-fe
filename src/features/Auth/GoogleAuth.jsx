@@ -8,6 +8,7 @@ import { UserContext } from "../../contexts/UserContext";
 import { googleClientId } from "../../constants/enviroment";
 import toast from "react-hot-toast";
 import GlobalWheel from "../../components/GlobalWheel";
+import { normalizeError } from "../../utils/normalizeError";
 
 export const GoogleAuth = ({ loader, setLoader }) => {
   const navigate = useNavigate();
@@ -22,25 +23,36 @@ export const GoogleAuth = ({ loader, setLoader }) => {
       <GoogleLogin
         buttonText="Login"
         onSuccess={async (response) => {
-          setLoader(true);
-          const res = await apiRequest("auth/google-authentication", {
-            method: "POST",
-            body: { googleToken: response.credential },
-          });
+          try {
+            setLoader(true);
+            const res = await apiRequest("auth/google-authentication", {
+              method: "POST",
+              body: { googleToken: response.credential },
+            });
 
-          const { data } = res;
+            const { data } = res;
 
-          saveUserAndTokens(data.user, {
-            accessToken: data?.tokens?.accessToken,
-            refreshToken: data?.token?.refreshToken,
-          });
+            saveUserAndTokens(data.user, {
+              accessToken: data?.tokens?.accessToken,
+              refreshToken: data?.token?.refreshToken,
+            });
 
-          setUser(data.user);
-          setIsAuthenticated(true);
+            setUser(data.user);
+            setIsAuthenticated(true);
 
-          navigate("/chat");
-          setLoader(false);
-          toast.success("Logged in successfully");
+            navigate("/chat");
+            setLoader(false);
+            toast.success("Logged in successfully");
+          } catch (error) {
+            setLoader(false);
+            const message = normalizeError(error.message);
+
+            if (message.includes("ThrottlerException")) {
+              toast.error("Too many attempts. Try again later");
+            } else {
+              toast.error(message);
+            }
+          }
         }}
       />
     </GoogleOAuthProvider>

@@ -11,6 +11,7 @@ import { UserContext } from "../contexts/UserContext";
 import SessionsContext from "../contexts/SessionContext";
 import FancyDynamicLoader from "../components/FancyDynamicLoader";
 import GlobalWheel from "../components/GlobalWheel";
+import { normalizeError } from "../utils/normalizeError";
 
 const ChatPage = () => {
   let { id } = useParams();
@@ -132,8 +133,14 @@ const ChatPage = () => {
         navigate(`/chat/c/${data.session.id}`);
         setIsLoader(false);
       }
-    } catch {
-      toast.error("Could not fetch messages. Try again.");
+    } catch (error) {
+      const message = normalizeError(error.message);
+
+      if (message.includes("ThrottlerException")) {
+        toast.error("Your Quota has been exceeded. Please try after 5 mins.");
+      } else {
+        toast.error(message);
+      }
     }
   };
 

@@ -51,8 +51,14 @@ const ManualAuth = ({ type, loader, setLoader }) => {
 
       toast.success(toastMessage);
     } catch (error) {
+      setLoader(false);
       const message = normalizeError(error.message);
-      toast.error(message);
+
+      if (message.includes("ThrottlerException")) {
+        toast.error("Too many attempts. Try again later");
+      } else {
+        toast.error(message);
+      }
     }
   };
 
