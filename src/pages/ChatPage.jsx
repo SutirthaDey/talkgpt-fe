@@ -23,6 +23,7 @@ const ChatPage = () => {
   const eventSourceRef = useRef(null);
   const navigate = useNavigate();
   const [isLoader, setIsLoader] = useState(false);
+  const [acceptInput, setAcceptInput] = useState(true);
 
   useEffect(() => {
     async function fetchHistoryByChat() {
@@ -75,6 +76,7 @@ const ChatPage = () => {
         ]);
 
         isFirstChunk = false;
+        setAcceptInput(false);
       }
 
       setChatHistory((prev) =>
@@ -107,6 +109,7 @@ const ChatPage = () => {
     try {
       setChatHistory((prev) => [...prev, useMessage]);
       setMessage("");
+      setAcceptInput(false);
 
       const path = id ? `chat/${id}` : "chat";
       if (!id) {
@@ -128,6 +131,8 @@ const ChatPage = () => {
         },
       });
 
+      setAcceptInput(true);
+
       if (data?.session) {
         setSessions((prev) => [data.session, ...prev]);
         navigate(`/chat/c/${data.session.id}`);
@@ -135,6 +140,9 @@ const ChatPage = () => {
       }
     } catch (error) {
       const message = normalizeError(error.message);
+
+      setIsLoader(false);
+      setAcceptInput(true);
 
       if (message.includes("ThrottlerException")) {
         toast.error("Your Quota has been exceeded. Please try after 5 mins.");
@@ -181,6 +189,7 @@ const ChatPage = () => {
           message={message}
           setMessage={setMessage}
           sendMessage={sendMessage}
+          acceptInput={acceptInput}
         />
       </div>
     </>

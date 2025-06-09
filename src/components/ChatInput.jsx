@@ -1,7 +1,11 @@
 import { BsFillSendFill } from "react-icons/bs";
+import { TbMessageDots } from "react-icons/tb";
+
+<TbMessageDots className="text-gray-600 animate-pulse" size={26} />;
+
 // import { GrMicrophone } from "react-icons/gr";
 
-const ChatInput = ({ message, setMessage, sendMessage }) => {
+const ChatInput = ({ message, setMessage, sendMessage, acceptInput }) => {
   return (
     <div className="fixed bottom-3 left-1/2 transform -translate-x-1/3 w-full max-w-4xl px-5">
       <div className="relative">
@@ -22,7 +26,16 @@ const ChatInput = ({ message, setMessage, sendMessage }) => {
           onClick={(e) => sendMessage()}
           className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#636AE8FF] hover:text-[#7c81e6]"
         >
-          <BsFillSendFill className="size-6" />
+          {acceptInput ? (
+            <BsFillSendFill className="size-6" />
+          ) : (
+            <div className="bg-gray-200 rounded-full px-3 py-2 inline-flex items-center gap-1 w-fit">
+              <div className="w-2 h-2 bg-gray-600 rounded-full animate-bounce [animation-delay:0s]" />
+              <div className="w-2 h-2 bg-gray-600 rounded-full animate-bounce [animation-delay:0.2s]" />
+              <div className="w-2 h-2 bg-gray-600 rounded-full animate-bounce [animation-delay:0.4s]" />
+            </div>
+          )}
+          {/* <BsFillSendFill className="size-6" /> */}
         </button>
         {/* <button className="absolute right-12 top-1/2 transform -translate-y-1/2 text-gray-600">
           <GrMicrophone className="size-5" />
