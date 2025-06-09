@@ -159,7 +159,7 @@ const ChatPage = () => {
     };
   }, [user, navigate]);
 
-  if (!isLoader) return <FancyDynamicLoader />;
+  if (isLoader) return <FancyDynamicLoader />;
 
   return (
     <div className="w-full min-h-96 h-screen flex flex-col overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-thumb-rounded-full scrollbar-track-transparent mt-5 py-5 relative">
