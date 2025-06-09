@@ -4,11 +4,11 @@
 // import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import { GoogleAuth } from "./GoogleAuth";
 
-const SocialAuth = () => {
+const SocialAuth = ({ loader, setLoader }) => {
   return (
     <div>
       <div className="w-full flex justify-center items-center mt-5 h-20 gap-3">
-        <GoogleAuth />
+        <GoogleAuth loader={loader} setLoader={setLoader} />
         {/* <button className="h-12 w-12 flex justify-center items-center rounded-full bg-[#335CA6FF] hover:bg-[#233F72FF]">
           <FaFacebook className="text-white size-5" />
         </button>

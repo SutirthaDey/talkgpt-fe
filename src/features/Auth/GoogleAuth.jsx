@@ -7,26 +7,28 @@ import { useAuth } from "../../contexts/AuthContext";
 import { UserContext } from "../../contexts/UserContext";
 import { googleClientId } from "../../constants/enviroment";
 import toast from "react-hot-toast";
+import GlobalWheel from "../../components/GlobalWheel";
 
-export const GoogleAuth = () => {
+export const GoogleAuth = ({ loader, setLoader }) => {
   const navigate = useNavigate();
   const apiRequest = useApiRequest();
   const { setUser } = useContext(UserContext);
   const { setIsAuthenticated } = useAuth();
+
+  if (loader) return <GlobalWheel text="Redirecting..." />;
 
   return (
     <GoogleOAuthProvider clientId={googleClientId}>
       <GoogleLogin
         buttonText="Login"
         onSuccess={async (response) => {
+          setLoader(true);
           const res = await apiRequest("auth/google-authentication", {
             method: "POST",
             body: { googleToken: response.credential },
           });
 
           const { data } = res;
-
-          console.log(data);
 
           saveUserAndTokens(data.user, {
             accessToken: data?.tokens?.accessToken,
@@ -37,6 +39,7 @@ export const GoogleAuth = () => {
           setIsAuthenticated(true);
 
           navigate("/chat");
+          setLoader(false);
           toast.success("Logged in successfully");
         }}
       />

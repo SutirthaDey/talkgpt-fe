@@ -10,6 +10,7 @@ import { baseUrl } from "../constants/enviroment";
 import { UserContext } from "../contexts/UserContext";
 import SessionsContext from "../contexts/SessionContext";
 import FancyDynamicLoader from "../components/FancyDynamicLoader";
+import GlobalWheel from "../components/GlobalWheel";
 
 const ChatPage = () => {
   let { id } = useParams();
@@ -159,20 +160,23 @@ const ChatPage = () => {
     };
   }, [user, navigate]);
 
-  if (isLoader) return <FancyDynamicLoader />;
+  // if (isLoader) return <FancyDynamicLoader />;
 
   return (
-    <div className="w-full min-h-96 h-screen flex flex-col overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-thumb-rounded-full scrollbar-track-transparent mt-5 py-5 relative">
-      <div className="mt-5 mb-10 w-[70%] mx-auto flex flex-col pb-24">
-        <Outlet context={{ setMessage, chatHistory }}></Outlet>
-      </div>
+    <>
+      {isLoader && <GlobalWheel text="Initializing Conversation..." />}
+      <div className="w-full min-h-96 h-screen flex flex-col overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-thumb-rounded-full scrollbar-track-transparent mt-5 py-5 relative">
+        <div className="mt-5 mb-10 w-[70%] mx-auto flex flex-col pb-24">
+          <Outlet context={{ setMessage, chatHistory }}></Outlet>
+        </div>
 
-      <ChatInput
-        message={message}
-        setMessage={setMessage}
-        sendMessage={sendMessage}
-      />
-    </div>
+        <ChatInput
+          message={message}
+          setMessage={setMessage}
+          sendMessage={sendMessage}
+        />
+      </div>
+    </>
   );
 };
 

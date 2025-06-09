@@ -9,7 +9,7 @@ import { toast } from "react-hot-toast";
 import { normalizeError } from "../../utils/normalizeError";
 import { UserContext } from "../../contexts/UserContext";
 
-const ManualAuth = ({ type }) => {
+const ManualAuth = ({ type, loader, setLoader }) => {
   const [showPassword, setShowPassword] = useState(false);
   const { setUser } = useContext(UserContext);
   const { setIsAuthenticated } = useAuth();
@@ -23,6 +23,7 @@ const ManualAuth = ({ type }) => {
     const url = type === "signup" ? "auth/sign-up" : "auth/sign-in";
 
     try {
+      setLoader(true);
       const response = await apiRequest(url, {
         method: "POST",
         needAuth: false,
@@ -40,6 +41,8 @@ const ManualAuth = ({ type }) => {
       setIsAuthenticated(true);
 
       navigate("/chat");
+
+      setLoader(false);
 
       const toastMessage =
         type === "signup"
