@@ -63,7 +63,7 @@ const ManualAuth = ({ type, loader, setLoader }) => {
   };
 
   return (
-    <div className="w-3/4 h-44 mx-auto flex flex-col mt-5">
+    <div className="w-[90%] sm:w-3/4 md:w-2/3 lg:w-3/4 h-auto mx-auto flex flex-col mt-5">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="flex flex-col gap-1">
           <label
@@ -75,8 +75,8 @@ const ManualAuth = ({ type, loader, setLoader }) => {
           <input
             id="email"
             placeholder="example.email@gmail.com"
-            className=" bg-[#F3F4F6FF] font-inter outline-none h-10 px-3 text-sm hover:bg-[#E5E7EBFF] focus:bg-[#E5E7EBFF] focus:outline-none focus:border-2 focus:border-blue-400 rounded-md transform"
-          ></input>
+            className="bg-[#F3F4F6FF] font-inter outline-none h-10 px-3 text-sm hover:bg-[#E5E7EBFF] focus:bg-[#E5E7EBFF] focus:outline-none focus:border-2 focus:border-blue-400 rounded-md"
+          />
         </div>
 
         <div className="flex flex-col gap-1">
@@ -91,17 +91,17 @@ const ManualAuth = ({ type, loader, setLoader }) => {
               id="password"
               type={showPassword ? "text" : "password"}
               placeholder="example.Abc@1234567"
-              className=" bg-[#F3F4F6FF] w-full font-inter outline-none h-10 px-3 text-sm hover:bg-[#E5E7EBFF] focus:bg-[#E5E7EBFF] focus:outline-none focus:border-2 focus:border-blue-400 rounded-md transform"
-            ></input>
-            <div className="absolute right-1 top-1/4">
+              className="bg-[#F3F4F6FF] w-full font-inter outline-none h-10 px-3 text-sm hover:bg-[#E5E7EBFF] focus:bg-[#E5E7EBFF] focus:outline-none focus:border-2 focus:border-blue-400 rounded-md"
+            />
+            <div className="absolute right-2 top-1/2 -translate-y-1/2">
               {showPassword ? (
                 <MdVisibilityOff
-                  className="size-5 opacity-75"
+                  className="size-5 opacity-75 cursor-pointer"
                   onClick={() => setShowPassword(false)}
                 />
               ) : (
                 <MdVisibility
-                  className="size-5 opacity-75"
+                  className="size-5 opacity-75 cursor-pointer"
                   onClick={() => setShowPassword(true)}
                 />
               )}
@@ -111,12 +111,13 @@ const ManualAuth = ({ type, loader, setLoader }) => {
 
         <button
           type="submit"
-          className="bg-[#171A1FFF] text-white p-2 rounded-md font-inter h-11 flex justify-center items-center text-lg px-4 mt-2 hover:bg-[#262A33FF]"
+          className="bg-[#171A1FFF] text-white py-2 px-4 rounded-md font-inter h-11 flex justify-center items-center text-base sm:text-lg mt-2 hover:bg-[#262A33FF]"
         >
           {type === "signup" ? "Sign Up" : "Sign In"}
         </button>
+
         {type === "signup" ? (
-          <p className="text-sm font-inter text-[#171A1FFF">
+          <p className="text-sm sm:text-base font-inter text-[#171A1FFF] text-center">
             Already have an account?{" "}
             <span
               className="text-[#266bff] font-semibold cursor-pointer hover:underline"
@@ -126,7 +127,7 @@ const ManualAuth = ({ type, loader, setLoader }) => {
             </span>
           </p>
         ) : (
-          <p className="text-sm font-inter text-[#171A1FFF]">
+          <p className="text-sm sm:text-base font-inter text-[#171A1FFF] text-center">
             Don't have an account?{" "}
             <span
               className="text-[#266bff] font-semibold cursor-pointer hover:underline"
