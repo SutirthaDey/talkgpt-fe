@@ -49,8 +49,8 @@ const NewChat = () => {
   if (isFresh) {
     return (
       <div className="h-full w-full flex justify-center items-end">
-        <h1 className="font-archivo text-[48px] font-[700] text-[#171A1FFF] leading-[68px] text-center px-4 opacity-0 animate-[fadeInUp_0.8s_ease-out_forwards]">
-          What's on your mind?
+        <h1 className="font-archivo text-5xl font-[700] text-[#171A1FFF] leading-[68px] text-center px-4 opacity-0 animate-[fadeInUp_0.8s_ease-out_forwards]">
+          What's On Your Mind?
         </h1>
       </div>
     );
@@ -66,7 +66,7 @@ const NewChat = () => {
         <div
           key={id}
           className={clsx(
-            "h-auto sm:h-18 w-full sm:w-5/6 md:w-3/4 rounded-md border-2 border-[#F3F4F6FF] flex items-center gap-3 hover:bg-gray-50 cursor-pointer p-2 sm:p-0",
+            "h-auto sm:h-18 w-screen sm:w-5/6 md:w-3/4 rounded-md border-2 border-[#F3F4F6FF] flex items-center gap-3 hover:bg-gray-50 cursor-pointer p-2 sm:p-0",
             selectedText === id ? "bg-[#fbecf1] hover:bg-[#fbecf1]" : ""
           )}
           onClick={() => onSuggestionSelect(id, text)}
