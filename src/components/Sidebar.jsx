@@ -108,7 +108,7 @@ const Sidebar = ({ isSidebarOpen }) => {
 
         {/* User Info & Logout */}
         <div className="h-28 w-full max-w-[260px] flex flex-col gap-3 bg-white rounded-md border-[#F8CEDBFF] border px-3 pt-4">
-          <div className="relative flex items-center justify-between">
+          <div className="flex items-center justify-between">
             <div className="flex justify-center items-center gap-3">
               <img
                 src={user?.profile?.profilePic ?? "/assests/G1.jpg"}
@@ -125,7 +125,7 @@ const Sidebar = ({ isSidebarOpen }) => {
             />
             {showModal && (
               <div
-                className={`absolute top-[-15px] right-[-160px] z-50 w-36 h-14 rounded-md border border-gray-200 bg-white shadow-md cursor-pointer transition-all duration-300 ease-in-out transform ${
+                className={`absolute top-[-15px] right-[-160px] z-1000 w-36 h-14 rounded-md border border-gray-200 bg-white shadow-md cursor-pointer transition-all duration-300 ease-in-out transform ${
                   showModal
                     ? "opacity-100 scale-100"
                     : "opacity-0 scale-95 pointer-events-none"
