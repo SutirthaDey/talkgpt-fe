@@ -49,7 +49,7 @@ const NewChat = () => {
   if (isFresh) {
     return (
       <div className="h-full w-full flex justify-center items-end">
-        <h1 className="font-archivo text-[48px] font-[700] text-[#171A1FFF] leading-[68px] text-center px-4">
+        <h1 className="font-archivo text-[48px] font-[700] text-[#171A1FFF] leading-[68px] text-center px-4 opacity-0 animate-[fadeInUp_0.8s_ease-out_forwards]">
           What's on your mind?
         </h1>
       </div>
@@ -57,28 +57,29 @@ const NewChat = () => {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center gap-5">
-      <h1 className="font-archivo text-[48px] font-[700] text-[#171A1FFF] leading-[68px] mb-10">
+    <div className="flex flex-col justify-center items-center gap-5 px-4 sm:px-6">
+      <h1 className="font-archivo text-3xl sm:text-4xl md:text-[48px] font-bold text-[#171A1FFF] leading-tight sm:leading-[58px] md:leading-[68px] mb-6 sm:mb-10 text-center opacity-0 animate-[fadeInUp_0.8s_ease-out_forwards]">
         Ask everything you want!
       </h1>
+
       {suggestions.map(({ id, icon, bg, text }) => (
         <div
           key={id}
           className={clsx(
-            "h-18 w-3/4 rounded-md border-[1px] border-[#F3F4F6FF] border-solid flex items-center gap-3 hover:bg-gray-50 cursor-pointer",
+            "h-auto sm:h-18 w-full sm:w-5/6 md:w-3/4 rounded-md border-2 border-[#F3F4F6FF] flex items-center gap-3 hover:bg-gray-50 cursor-pointer p-2 sm:p-0",
             selectedText === id ? "bg-[#fbecf1] hover:bg-[#fbecf1]" : ""
           )}
           onClick={() => onSuggestionSelect(id, text)}
         >
           <div
             className={clsx(
-              "h-16 w-20 rounded-[4px] flex justify-center items-center",
+              "min-h-[64px] min-w-[64px] sm:h-16 sm:w-20 rounded-[4px] flex justify-center items-center shrink-0",
               bg
             )}
           >
             {icon}
           </div>
-          <p className="font-inter text-[#171A1FFF] font-[400] text-lg">
+          <p className="font-inter text-[#171A1FFF] font-normal text-base sm:text-lg leading-snug pr-2">
             {text}
           </p>
         </div>
