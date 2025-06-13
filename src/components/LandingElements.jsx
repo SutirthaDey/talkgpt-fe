@@ -8,7 +8,7 @@ import { PiLightbulb } from "react-icons/pi";
 
 const LandingElements = () => {
   return (
-    <>
+    <div className="hidden lg:block">
       <img
         src="/assests/wave.png"
         alt="wave"
@@ -125,7 +125,7 @@ const LandingElements = () => {
       <div className="absolute top-[305px] left-[458px] w-[60px] h-[60px] bg-[#F8CEDBFF] rounded-md flex justify-center items-center">
         <PiLightbulb className="h-[32px] w-[32px] text-[#E8618CFF]" />
       </div>
-    </>
+    </div>
   );
 };
 

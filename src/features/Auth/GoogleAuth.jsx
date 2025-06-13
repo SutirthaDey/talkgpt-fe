@@ -7,7 +7,6 @@ import { useAuth } from "../../contexts/AuthContext";
 import { UserContext } from "../../contexts/UserContext";
 import { googleClientId } from "../../constants/enviroment";
 import toast from "react-hot-toast";
-import GlobalWheel from "../../components/GlobalWheel";
 import { normalizeError } from "../../utils/normalizeError";
 
 export const GoogleAuth = ({ loader, setLoader }) => {
@@ -15,8 +14,6 @@ export const GoogleAuth = ({ loader, setLoader }) => {
   const apiRequest = useApiRequest();
   const { setUser } = useContext(UserContext);
   const { setIsAuthenticated } = useAuth();
-
-  if (loader) return <GlobalWheel text="Redirecting..." />;
 
   return (
     <GoogleOAuthProvider clientId={googleClientId}>
